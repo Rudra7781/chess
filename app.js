@@ -1,5 +1,6 @@
 //console.log("hello world");
 var audio = new Audio('./Img/move.mp3');
+var wrong = new Audio('./Img/wrongMove.mp3');
 var game = []
 var objects = []
 
@@ -19,6 +20,7 @@ const board = document.getElementById("board");
 
 var boxes = [];
 var pieceInHand = false
+var pop  = document.getElementById('popup')
 
 function CreateChessBoard() {
     for (let i = 0; i <= 7; i++) {
@@ -158,7 +160,7 @@ function movePiece(objId, newPosition, div, current) {
     var X = strToInt(newPosition)[0]
     var Y = strToInt(newPosition)[1];
     // console.log(x,y) //(x,y) is the new position
-    if (checkmove(obj, newPosition, obj.color)) {
+    if (!checkmove(obj, newPosition, obj.color)) {
         //check for "check"
         // console.log('no check')
         // if(!ifCheck(game, objects, obj , X,Y)){
@@ -166,14 +168,19 @@ function movePiece(objId, newPosition, div, current) {
         //     console.log('King is in check')
         //     return
         // }
-    } else {
-        console.log('error  : ', newPosition)
+
+        // console.log('error  : ', newPosition)
+        // window.alert("Illegal Move")
+        pop.style.display = 'block'
+        wrong.play()
+        setTimeout(function(){pop.style.display ='none'},900);
+        
         return;
     }
 
     //console.log(current)
     if (current.length != 0) { //Take method
-        console.log(child.id + ' takes ' + current[0].id)
+        // console.log(child.id + ' takes ' + current[0].id)
 
         // console.log(current[0].id)
         // if (check == 0) {
@@ -209,7 +216,7 @@ function movePiece(objId, newPosition, div, current) {
     obj.moved = 1; // for pawn
     //console.log(obj)
     //console.log('next legal moves ' + obj.legalMove())
-    console.log(game);
+    // console.log(game);
     var moves = obj.legalMove()
     // console.log(moves)
     // console.log(objects);
@@ -222,11 +229,11 @@ var child, prnt;
 
 function onClickPiece() {
     var piece = this.childNodes[0]
-    console.log('pieceInHand', pieceInHand)
-    if(pieceInHand){
+    // console.log('pieceInHand', pieceInHand)
+    if (pieceInHand) {
         dragdrop.call(this)
     }
-    else if (piece && piece.draggable){
+    else if (piece && piece.draggable) {
         dragstart.call(piece)
         pieceInHand = true
         // pieceInHand[1] = this
@@ -237,7 +244,7 @@ function onClickPiece() {
 function dragstart() {
     child = this;
     prnt = this.parentElement;
-    console.log(child, prnt)
+    // console.log(child, prnt)
     // prnt.removeChild(child)
 }
 function dragend() {
@@ -266,17 +273,17 @@ function leave() {
 var check = 0
 function dragdrop() {
     // console.log('hi')
-    
+
     // this= this
-    console.log('drop at',this)
+    // console.log('drop at',this)
     var current = this.childNodes;
-    console.log(current)
+    // console.log(current)
     //console.log(this.id) // id of square u put in
 
     //console.log('hi')
     var objId = child.id.replace('-', '')
     var newPosition = this.id;
-    console.log(objId + ' moves to ' + newPosition)
+    // console.log(objId + ' moves to ' + newPosition)
     movePiece(objId, newPosition, this, current)
     pieceInHand = false
     // if (current.length != 0) {
@@ -296,7 +303,7 @@ function dragdrop() {
 // console.log(objects)
 // 
 
-console.log(game, boxes)
+// console.log(game, boxes)
 // console.log(objects)
 function clearBoard() {
     location.reload()
@@ -330,10 +337,10 @@ function test() {
     col = 1
     let pie2 = new Rooks(i + '' + j, 'W_rook', col);
     addPiece(i, j, "W_rook", pie2);
-    console.log(pie)
-    console.log(pie.legalMove())
-    console.log(pie2)
-    console.log(pie2.legalMove())
+    // console.log(pie)
+    // console.log(pie.legalMove())
+    // console.log(pie2)
+    // console.log(pie2.legalMove())
 
 }
 // test()
