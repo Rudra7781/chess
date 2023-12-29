@@ -12,12 +12,13 @@ import {
     King,
     Player,
 } from './js/class.js';
-import { strToInt, checkmove, FindObj, restrictPiece ,ifCheck } from './js/func.js';
+import { strToInt, checkmove, FindObj, restrictPiece, ifCheck } from './js/func.js';
 
 
 const board = document.getElementById("board");
 
 var boxes = [];
+var pieceInHand = false
 
 function CreateChessBoard() {
     for (let i = 0; i <= 7; i++) {
@@ -32,6 +33,7 @@ function CreateChessBoard() {
             square.addEventListener("dragover", over);
             square.addEventListener("dragenter", enter);
             square.addEventListener('drop', dragdrop);
+            square.addEventListener("click", onClickPiece);
 
             // square.innerText ='('+ i +','+ k + ')';
             if (i % 2 == 0) {
@@ -65,7 +67,10 @@ function addPiece(i, j, str, pie) {
     var piece = document.createElement("img");
     piece.src = "./Img/" + str + ".png";
     piece.classList.add("piece");
+    // console.log(piece)
     piece.addEventListener("dragstart", dragstart);
+    // piece.addEventListener("click", onClickPiece);
+    // console.log(piece)
     if (pie.color == 1) {
         piece.draggable = true;
     } else {
@@ -153,7 +158,7 @@ function movePiece(objId, newPosition, div, current) {
     var X = strToInt(newPosition)[0]
     var Y = strToInt(newPosition)[1];
     // console.log(x,y) //(x,y) is the new position
-    if (checkmove(obj, newPosition ,obj.color)) {
+    if (checkmove(obj, newPosition, obj.color)) {
         //check for "check"
         // console.log('no check')
         // if(!ifCheck(game, objects, obj , X,Y)){
@@ -161,7 +166,7 @@ function movePiece(objId, newPosition, div, current) {
         //     console.log('King is in check')
         //     return
         // }
-    }else{
+    } else {
         console.log('error  : ', newPosition)
         return;
     }
@@ -215,10 +220,24 @@ function movePiece(objId, newPosition, div, current) {
 // console.log(img)
 var child, prnt;
 
+function onClickPiece() {
+    var piece = this.childNodes[0]
+    console.log('pieceInHand', pieceInHand)
+    if(pieceInHand){
+        dragdrop.call(this)
+    }
+    else if (piece && piece.draggable){
+        dragstart.call(piece)
+        pieceInHand = true
+        // pieceInHand[1] = this
+    }
+    // else
+}
+
 function dragstart() {
     child = this;
     prnt = this.parentElement;
-    console.log(child,prnt)
+    console.log(child, prnt)
     // prnt.removeChild(child)
 }
 function dragend() {
@@ -247,16 +266,19 @@ function leave() {
 var check = 0
 function dragdrop() {
     // console.log('hi')
-    // console.log(this)
+    
+    // this= this
+    console.log('drop at',this)
     var current = this.childNodes;
-    // console.log(current)
+    console.log(current)
     //console.log(this.id) // id of square u put in
 
     //console.log('hi')
     var objId = child.id.replace('-', '')
     var newPosition = this.id;
-    // console.log(objId + ' moves to ' + newPosition)
+    console.log(objId + ' moves to ' + newPosition)
     movePiece(objId, newPosition, this, current)
+    pieceInHand = false
     // if (current.length != 0) {
     //     console.log(child.id + ' takes ' + current[0].id)
     //     // console.log(current[0].id)
@@ -319,13 +341,14 @@ function test() {
 
 // ifCheck(game,objects,0) //black king
 
-const pwn2 = document.getElementsByClassName("piece");
+// const pwn2 = document.getElementsByClassName("piece");
+// console.log(pwn2)
 
-
-for (let i = 0; i < pwn2.length; i++) {
-    //console.log('hi')
-    pwn2[i].addEventListener("dragstart", dragstart);
-    //   pwn[i].addEventListener('dragend', dragend)
-    // pwn[i].addEventListener('drop', dragdrop)
-}
-// // //-----------------------------------------------------------------------------------
+// // for (let i = 0; i < pwn2.length; i++) {
+// //     //console.log('hi')
+// //     pwn2[i].addEventListener("dragstart", dragstart);
+// //     //   pwn[i].addEventListener('dragend', dragend)
+// //     // pwn[i].addEventListener('drop', dragdrop)
+// // }
+// // // //-----------------------------------------------------------------------------------
+// console.log('END')
