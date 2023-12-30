@@ -421,10 +421,9 @@ export class Queen extends ChessPieces {
             i = this.x;
             j = this.y + k;
             result = pieceOnSqr(i,j,this.id)
+            // console.log(i,j,result)
             if (!result) {
-                if (result[1]==0) {
-                    this.legal_moves.push(i + '' + j)
-                }
+                this.legal_moves.push(i + '' + j)
             }
             if (j > 7 || result[0]) {
                 if (result[1]==0) {
@@ -452,10 +451,11 @@ export class Queen extends ChessPieces {
             i = this.x + k;
             j = this.y;
             result = pieceOnSqr(i,j,this.id)
+            console.log(i,j,result)
             if (!result) {
-                if (result[1]==0) {
+                // if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
-                }
+                // }
             }
             if (i > 7 || result[0]) {
                 if (result[1]==0) {

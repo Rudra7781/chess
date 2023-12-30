@@ -20,7 +20,7 @@ const board = document.getElementById("board");
 
 var boxes = [];
 var pieceInHand = false
-var pop  = document.getElementById('popup')
+// var pop  = document.getElementById('popup')
 
 function CreateChessBoard() {
     for (let i = 0; i <= 7; i++) {
@@ -171,9 +171,9 @@ function movePiece(objId, newPosition, div, current) {
 
         // console.log('error  : ', newPosition)
         // window.alert("Illegal Move")
-        pop.style.display = 'block'
+        // pop.style.display = 'block'
         wrong.play()
-        setTimeout(function(){pop.style.display ='none'},900);
+        // setTimeout(function(){pop.style.display ='none'},900);
         
         return;
     }

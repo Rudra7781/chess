@@ -18,8 +18,8 @@ export function pieceOnSqr(i, j, col) {//i - verrtical , j - horizontal
         //console.log('hi111')
         var y = strToInt(objId)[0]
         var int = Math.abs(x - y)
-        // console.log(int,'sxh')
-        if (int >= 1) {
+        console.log(i,j,'---',x,objId,y,int,'sxh')
+        if (int > 1) {
             // console.log('no pi')
             return [false,0] // move - enemy piece on square
         } else {
