@@ -1,11 +1,11 @@
 .btn{
-    padding: 1vh;
+    padding: 1vw;
     border-radius: 1vh;
     background: rgb(1, 181, 55);
     color: black;
     font-size: 2vh;
     border: 1px solid rgb(2, 138, 118);
-    margin: 4vh;
+    margin: 4vw;
     /* padding: 2vh; */
 }
 h3{
@@ -14,9 +14,10 @@ h3{
 .menu{
     display: grid;
     margin: 5px 5px;
+    
 }
 
-.body {
+.body, .head {
     display: flex;
     /* height: 100vh; */
     align-items: center;
@@ -108,9 +109,17 @@ h3{
         width: 100vw;
         /* margin: 2vw; */
     }
-    .body{
+
+
+}
+@media only screen and (max-width: 390px) {
+    .head{
         /* display: block; */
         width: 100vw;
+        height: 20vw;
+        /* align-items:normal; */
+        justify-content:stretch;
+        font-size: 4vw;
         /* margin: 2vw; */
     }
-  }
+}
