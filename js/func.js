@@ -18,7 +18,7 @@ export function pieceOnSqr(i, j, col) {//i - verrtical , j - horizontal
         //console.log('hi111')
         var y = strToInt(objId)[0]
         var int = Math.abs(x - y)
-        console.log(i,j,'---',x,objId,y,int,'sxh')
+        // console.log(i,j,'---',x,objId,y,int,'sxh')
         if (int > 1) {
             // console.log('no pi')
             return [false,0] // move - enemy piece on square
@@ -68,6 +68,8 @@ export function restrictPiece(objects) {
     })
 
 }
+
+
 
 export function ifCheck(game, objects,obj,X,Y) {
     // console.log(col)
@@ -133,4 +135,20 @@ export function ifCheck(game, objects,obj,X,Y) {
     //     return move;
     // }
 
+}
+
+
+export function highlight(list){
+    list.forEach(id => {
+        // console.log(id)
+        document.getElementById(id).classList.add('highlight')
+    });
+}
+export function unhighlight(){
+    var divsWithClass = document.querySelectorAll('.highlight');
+
+    // Loop through the selected elements and remove the class
+    divsWithClass.forEach(function(div) {
+      div.classList.remove('highlight');
+    })
 }

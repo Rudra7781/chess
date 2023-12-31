@@ -51,10 +51,21 @@ h3{
     color: white;
 }
 
-/* .square:hover {
-    cursor: pointer;
-    
-} */
+.highlight{
+    position: relative;
+}
+.highlight::after{
+    /* cursor: pointer; */
+    content: "";
+    position: absolute;
+    z-index: 3;
+    background: inherit;
+    opacity: 0.5;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    filter: brightness(0.9);   
+}
 
 .dark {
     background: #779a54;
