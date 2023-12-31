@@ -5,7 +5,7 @@
     color: black;
     font-size: 2vh;
     border: 1px solid rgb(2, 138, 118);
-    margin: 4vw;
+    margin: 4vh;
     /* padding: 2vh; */
 }
 h3{
@@ -16,8 +16,14 @@ h3{
     margin: 5px 5px;
     
 }
-
-.body, .head {
+ .head{
+    display: flex;
+    /* height: 100vh; */
+    align-items: center;
+    justify-content: center;
+    /* padding-bottom: 5vh; */
+ }
+.body{
     display: flex;
     /* height: 100vh; */
     align-items: center;
@@ -45,10 +51,21 @@ h3{
     color: white;
 }
 
-/* .square:hover {
-    cursor: pointer;
-    
-} */
+.highlight{
+    position: relative;
+}
+.highlight::after{
+    /* cursor: pointer; */
+    content: "";
+    position: absolute;
+    z-index: 3;
+    background: inherit;
+    opacity: 0.5;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    filter: brightness(0.9);   
+}
 
 .dark {
     background: #779a54;

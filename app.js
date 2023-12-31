@@ -13,14 +13,14 @@ import {
     King,
     Player,
 } from './js/class.js';
-import { strToInt, checkmove, FindObj, restrictPiece, ifCheck } from './js/func.js';
+import { strToInt, checkmove, FindObj, restrictPiece, ifCheck, highlight, unhighlight } from './js/func.js';
 
 
 const board = document.getElementById("board");
 
 var boxes = [];
 var pieceInHand = false
-var pop  = document.getElementById('popup')
+// var pop  = document.getElementById('popup')
 
 function CreateChessBoard() {
     for (let i = 0; i <= 7; i++) {
@@ -161,29 +161,12 @@ function movePiece(objId, newPosition, div, current) {
     var Y = strToInt(newPosition)[1];
     // console.log(x,y) //(x,y) is the new position
     if (!checkmove(obj, newPosition, obj.color)) {
-        //check for "check"
-        // console.log('no check')
-        // if(!ifCheck(game, objects, obj , X,Y)){
-
-        //     console.log('King is in check')
-        //     return
-        // }
-
-        // console.log('error  : ', newPosition)
-        // window.alert("Illegal Move")
-        pop.style.display = 'block'
         wrong.play()
-        setTimeout(function(){pop.style.display ='none'},900);
-        
         return;
     }
 
     //console.log(current)
     if (current.length != 0) { //Take method
-        // console.log(child.id + ' takes ' + current[0].id)
-
-        // console.log(current[0].id)
-        // if (check == 0) {
         var objId = current[0].id.replace('-', '')
         for (var i = 0; i < objects.length; i++) {
             if (objects[i].id == objId) {
@@ -200,12 +183,6 @@ function movePiece(objId, newPosition, div, current) {
             clearBoard();
             return;
         }
-        // console.log(objects)
-        // } else {
-        //     console.log('err2')
-        //     return
-        // }
-        // console.log(current[0])
     }
     div.appendChild(child);
     audio.play();
@@ -213,13 +190,8 @@ function movePiece(objId, newPosition, div, current) {
     game[X][Y] = obj.id;
     obj.UpdatePosition(X, Y);
     restrictPiece(objects)
-    obj.moved = 1; // for pawn
-    //console.log(obj)
-    //console.log('next legal moves ' + obj.legalMove())
-    // console.log(game);
+    obj.moved = 1;
     var moves = obj.legalMove()
-    // console.log(moves)
-    // console.log(objects);
 }
 
 
@@ -244,7 +216,10 @@ function onClickPiece() {
 function dragstart() {
     child = this;
     prnt = this.parentElement;
-    // console.log(child, prnt)
+    var objId = child.id.replace('-', '')
+    var obj = FindObj(objId,objects)
+    // console.log(obj.legalMove())
+    highlight(obj.legalMove())
     // prnt.removeChild(child)
 }
 function dragend() {
@@ -286,6 +261,7 @@ function dragdrop() {
     // console.log(objId + ' moves to ' + newPosition)
     movePiece(objId, newPosition, this, current)
     pieceInHand = false
+    unhighlight()
     // if (current.length != 0) {
     //     console.log(child.id + ' takes ' + current[0].id)
     //     // console.log(current[0].id)
@@ -308,10 +284,10 @@ function dragdrop() {
 function clearBoard() {
     location.reload()
 }
-document.getElementById('btn').addEventListener('click', clearBoard)
-var restricts = document.getElementById('rst')
 // restricts.addEventListener('click',restrictPiece,false)
 // restricts.myObj = objects
+document.getElementById('btn').addEventListener('click', clearBoard)
+var restricts = document.getElementById('rst')
 // restricts.myNum = 0
 
 

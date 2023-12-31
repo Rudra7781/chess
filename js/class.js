@@ -36,28 +36,29 @@ export class Pawns extends ChessPieces {
         this.legal_moves = []
         var i, j;
         j = this.y;
-        console.log(this.x,this.y,'=----------')
+        // console.log(this.x,this.y,'=----------')
         if (this.color == 0) {//black
             if (this.moved == 0) {
                 i = this.x + 2;
-                if (!pieceOnSqr(i, j, this.id)[0]) {
+                if (!pieceOnSqr(i, j, this.id)[0] && !pieceOnSqr(i-1, j, this.id)[0] && pieceOnSqr(i-1, j, this.id)[1] == 1 && pieceOnSqr(i, j, this.id)[1] == 1) {
                     this.legal_moves.push(i + '' + j);
+                    // console.log(i,j)
                 }
                 //this.moved = 1;
             }
             i = this.x + 1;
             if (!pieceOnSqr(i, j, this.id)[0] && pieceOnSqr(i, j, this.id)[1] == 1) {
-                console.log(i,j,'no pi sqr',pieceOnSqr(i, j, this.id))
+                // console.log(i,j,'no pi sqr',pieceOnSqr(i, j, this.id))
                 this.legal_moves.push(i + '' + j);
             }
             j = this.y + 1
             // console.log(pieceOnSqr(i,j, this.id),'after j+1 = ',i,j,this.x,this.y)
             if (!pieceOnSqr(i,j, this.id)[0] && pieceOnSqr(i, j, this.id)[1] == 0){
-                console.log('yes take dsdsdd',i,j)
+                // console.log('yes take dsdsdd',i,j)
                 this.legal_moves.push(i + '' + j);
             }
-            if (!pieceOnSqr(i,j-2, this.id)[0] && j-2 > 0 && pieceOnSqr(i, j-2, this.id)[1] == 0){
-                console.log('yes take')
+            if (!pieceOnSqr(i,j-2, this.id)[0] && j-2 >= 0 && pieceOnSqr(i, j-2, this.id)[1] == 0){
+                // console.log('yes take')
                 this.legal_moves.push(i + '' + (j-2));
             }
             
@@ -113,8 +114,12 @@ export class Rooks extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // --->
             i = this.x;
             j = this.y + k;
-
+            
             if (j > 7 || pieceOnSqr(i, j, this.id)[0]) {
+                break;
+            }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
                 break;
             }
             this.legal_moves.push(i + '' + j)
@@ -125,7 +130,11 @@ export class Rooks extends ChessPieces {
             i = this.x;
             j = this.y - k;
             if (j < 0 || pieceOnSqr(i, j, this.id)[0]) {
-                console.log('Hiiii')
+                // console.log('Hiiii')
+                break;
+            }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -138,6 +147,10 @@ export class Rooks extends ChessPieces {
             if (i > 7 || pieceOnSqr(i, j, this.id)[0]) {
                 break;
             }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             this.legal_moves.push(i + '' + j);
             // console.log(i + '' + j);
         }
@@ -146,6 +159,11 @@ export class Rooks extends ChessPieces {
             i = this.x - k;
             j = this.y;
             if (i < 0 || pieceOnSqr(i, j, this.id)[0]) {
+                break;
+            }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
+                // console.log(i,j)
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -274,6 +292,10 @@ export class Bishops extends ChessPieces {
             if (j > 7 || i > 7 || pieceOnSqr(i, j, this.id)[0]) {
                 break;
             }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             this.legal_moves.push(i + '' + j)
             // console.log(i + '' + j);
         }
@@ -282,6 +304,10 @@ export class Bishops extends ChessPieces {
             i = this.x - k;
             j = this.y - k;
             if (j < 0 || i < 0 || pieceOnSqr(i, j, this.id)[0]) {
+                break;
+            }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -294,6 +320,10 @@ export class Bishops extends ChessPieces {
             if (i > 7 || j < 0 || pieceOnSqr(i, j, this.id)[0]) {
                 break;
             }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             this.legal_moves.push(i + '' + j);
             // console.log(i + '' + j);
         }
@@ -302,6 +332,10 @@ export class Bishops extends ChessPieces {
             i = this.x - k;
             j = this.y + k;
             if (i < 0 || j > 7 || pieceOnSqr(i, j, this.id)[0]) {
+                break;
+            }
+            else if(pieceOnSqr(i, j, this.id)[1]==0){
+                this.legal_moves.push(i + '' + j)
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -401,7 +435,7 @@ export class King extends ChessPieces {
             this.legal_moves.push(i + '' + j);
             // console.log(i + '' + j);
         }
-        console.log(this.legal_moves)
+        // console.log(this.legal_moves)
         return this.legal_moves;
     }
 }
@@ -421,17 +455,18 @@ export class Queen extends ChessPieces {
             i = this.x;
             j = this.y + k;
             result = pieceOnSqr(i,j,this.id)
-            if (!result) {
-                if (result[1]==0) {
-                    this.legal_moves.push(i + '' + j)
-                }
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
             }
+            
             if (j > 7 || result[0]) {
                 if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
                 }
                 break;
             }
+            // console.log(i,j,this.x,this.y)
             this.legal_moves.push(i + '' + j)
             // console.log(i + '' + j);
         }
@@ -440,6 +475,10 @@ export class Queen extends ChessPieces {
             i = this.x;
             j = this.y - k;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
         
             if (j < 0 || result[0] ) {
                 break;
@@ -452,10 +491,15 @@ export class Queen extends ChessPieces {
             i = this.x + k;
             j = this.y;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
+            // console.log(i,j,!result)
             if (!result) {
-                if (result[1]==0) {
+                // if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
-                }
+                // }
             }
             if (i > 7 || result[0]) {
                 if (result[1]==0) {
@@ -471,6 +515,10 @@ export class Queen extends ChessPieces {
             i = this.x - k;
             j = this.y;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             if (!result) {
                 if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
@@ -490,6 +538,10 @@ export class Queen extends ChessPieces {
             i = this.x + k;
             j = this.y + k;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             if (!result) {
                 if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
@@ -509,6 +561,10 @@ export class Queen extends ChessPieces {
             i = this.x - k;
             j = this.y - k;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             if (!result) {
                 if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
@@ -528,6 +584,10 @@ export class Queen extends ChessPieces {
             i = this.x + k;
             j = this.y - k;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             if (!result) {
                 if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
@@ -547,6 +607,10 @@ export class Queen extends ChessPieces {
             i = this.x - k;
             j = this.y + k;
             result = pieceOnSqr(i,j,this.id)
+            if (!result[0] && result[1]==0) {
+                this.legal_moves.push(i + '' + j)
+                break;
+            }
             if (!result) {
                 if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
