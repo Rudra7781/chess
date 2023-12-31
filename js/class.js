@@ -163,11 +163,11 @@ export class Rooks extends ChessPieces {
             }
             else if(pieceOnSqr(i, j, this.id)[1]==0){
                 this.legal_moves.push(i + '' + j)
-                console.log(i,j)
+                // console.log(i,j)
                 break;
             }
             this.legal_moves.push(i + '' + j);
-            console.log(i + '' + j);
+            // console.log(i + '' + j);
         }
         return this.legal_moves;
     }
@@ -435,7 +435,7 @@ export class King extends ChessPieces {
             this.legal_moves.push(i + '' + j);
             // console.log(i + '' + j);
         }
-        console.log(this.legal_moves)
+        // console.log(this.legal_moves)
         return this.legal_moves;
     }
 }
@@ -466,7 +466,7 @@ export class Queen extends ChessPieces {
                 }
                 break;
             }
-            console.log(i,j,this.x,this.y)
+            // console.log(i,j,this.x,this.y)
             this.legal_moves.push(i + '' + j)
             // console.log(i + '' + j);
         }
@@ -495,7 +495,7 @@ export class Queen extends ChessPieces {
                 this.legal_moves.push(i + '' + j)
                 break;
             }
-            console.log(i,j,!result)
+            // console.log(i,j,!result)
             if (!result) {
                 // if (result[1]==0) {
                     this.legal_moves.push(i + '' + j)
