@@ -1,8 +1,24 @@
 //console.log("hello world");
 var audio = new Audio('./Img/move.mp3');
 var wrong = new Audio('./Img/wrongMove.mp3');
+var end = new Audio('./Img/game-end.mp3');
 var game = []
 var objects = []
+var notification = document.getElementById('notification')
+var msg = document.getElementById('msg')
+var CheckMsg = document.getElementById('check')
+
+
+const btns = document.getElementsByClassName('btn')
+Array.from(btns).forEach(btn => {
+    btn.addEventListener('click', () => {
+        console.log('Restart')
+        notification.style.display = 'none';
+         location.reload()
+
+    })
+})
+
 
 import {
     Pawns,
@@ -13,7 +29,7 @@ import {
     King,
     Player,
 } from './js/class.js';
-import { strToInt, checkmove, FindObj, restrictPiece, ifCheck, highlight, unhighlight } from './js/func.js';
+import { strToInt, checkmove, FindObj, restrictPiece, ifCheck, highlight, unhighlight, ifCheckmate } from './js/func.js';
 
 
 const board = document.getElementById("board");
@@ -153,14 +169,29 @@ function SetChessBoard() {
 CreateChessBoard();
 SetChessBoard();
 //console.log(boxes[0][0])
+// console.log(objects)
 
-function movePiece(objId, newPosition, div, current) {
+function movePiece(objId, newPosition, div, current, objects) {
+    // console.log(objects.length)
+
+
     var obj = FindObj(objId, objects);
     //console.log(obj);
     var X = strToInt(newPosition)[0]
     var Y = strToInt(newPosition)[1];
+    //obj piece that is moving
     // console.log(x,y) //(x,y) is the new position
-    if (!checkmove(obj, newPosition, obj.color)) {
+    var chk = ifCheck(objects, obj, X, Y, current)
+    if (!checkmove(obj, newPosition, objects)) {
+        wrong.play()
+        return;
+    }
+    // console.log(chk)
+    if (chk) {
+        CheckMsg.style.display = 'grid'
+        setTimeout(() => {
+            CheckMsg.style.display = 'none';
+        }, 2000)
         wrong.play()
         return;
     }
@@ -171,27 +202,36 @@ function movePiece(objId, newPosition, div, current) {
         for (var i = 0; i < objects.length; i++) {
             if (objects[i].id == objId) {
                 objects.splice(i, 1);
+                console.log('ddcdf')
             }
         }
         div.removeChild(current[0]);
-        if (!objects.includes(FindObj('04', objects))) {
-            alert('White Wins');
-            clearBoard();
-            return;
-        } else if (!objects.includes(FindObj('74', objects))) {
-            alert('Black Wins');
-            clearBoard();
-            return;
-        }
     }
     div.appendChild(child);
-    audio.play();
     game[obj.x][obj.y] = '--';
-    game[X][Y] = obj.id;
     obj.UpdatePosition(X, Y);
+    game[X][Y] = obj.id;
     restrictPiece(objects)
     obj.moved = 1;
-    var moves = obj.legalMove()
+    console.log('before checkmate',obj)
+
+    if (ifCheckmate(objects, obj)) {
+        if(obj.color){
+            msg.innerHTML = "White Wins"
+        }else{
+            msg.innerHTML = "Black Wins"
+        }
+        notification.style.display = 'grid';
+        end.play()
+        // setTimeout(() => {
+        //     clearBoard();
+            
+        // }, 4000);
+        return;
+    }
+    audio.play();
+    // console.log(objects.length)
+    // var moves = obj.legalMove(objects)
 }
 
 
@@ -202,24 +242,29 @@ var child, prnt;
 function onClickPiece() {
     var piece = this.childNodes[0]
     // console.log('pieceInHand', pieceInHand)
-    if (pieceInHand) {
+    var sameCol = false
+    try {
+        sameCol = piece.draggable
+    } catch (error) {
+
+    }
+    if (pieceInHand && !sameCol) {
         dragdrop.call(this)
     }
     else if (piece && piece.draggable) {
         dragstart.call(piece)
         pieceInHand = true
-        // pieceInHand[1] = this
     }
-    // else
 }
 
 function dragstart() {
+    unhighlight()
     child = this;
     prnt = this.parentElement;
     var objId = child.id.replace('-', '')
-    var obj = FindObj(objId,objects)
-    // console.log(obj.legalMove())
-    highlight(obj.legalMove())
+    var obj = FindObj(objId, objects)
+    // console.log(prnt)
+    highlight(prnt, obj.legalMove(objects))
     // prnt.removeChild(child)
 }
 function dragend() {
@@ -247,19 +292,12 @@ function leave() {
 }
 var check = 0
 function dragdrop() {
-    // console.log('hi')
 
-    // this= this
-    // console.log('drop at',this)
     var current = this.childNodes;
-    // console.log(current)
-    //console.log(this.id) // id of square u put in
-
-    //console.log('hi')
     var objId = child.id.replace('-', '')
     var newPosition = this.id;
     // console.log(objId + ' moves to ' + newPosition)
-    movePiece(objId, newPosition, this, current)
+    movePiece(objId, newPosition, this, current, objects)
     pieceInHand = false
     unhighlight()
     // if (current.length != 0) {
@@ -282,11 +320,12 @@ function dragdrop() {
 // console.log(game, boxes)
 // console.log(objects)
 function clearBoard() {
+    console.log('Restart')
+    notification.style.display = 'none';
     location.reload()
 }
 // restricts.addEventListener('click',restrictPiece,false)
 // restricts.myObj = objects
-document.getElementById('btn').addEventListener('click', clearBoard)
 var restricts = document.getElementById('rst')
 // restricts.myNum = 0
 
@@ -314,15 +353,14 @@ function test() {
     let pie2 = new Rooks(i + '' + j, 'W_rook', col);
     addPiece(i, j, "W_rook", pie2);
     // console.log(pie)
-    // console.log(pie.legalMove())
+    // console.log(pie.legalMove(objects))
     // console.log(pie2)
-    // console.log(pie2.legalMove())
+    // console.log(pie2.legalMove(objects))
 
 }
 // test()
 
 
-// ifCheck(game,objects,0) //black king
 
 // const pwn2 = document.getElementsByClassName("piece");
 // console.log(pwn2)
