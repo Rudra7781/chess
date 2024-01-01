@@ -32,7 +32,7 @@ export class Pawns extends ChessPieces {
     }
     moved = 0; //pawn is unmoved
     legal_moves = []
-    legalMove() {
+    legalMove(objects) {
         this.legal_moves = []
         var i, j;
         j = this.y;
@@ -40,24 +40,24 @@ export class Pawns extends ChessPieces {
         if (this.color == 0) {//black
             if (this.moved == 0) {
                 i = this.x + 2;
-                if (!pieceOnSqr(i, j, this.id)[0] && !pieceOnSqr(i-1, j, this.id)[0] && pieceOnSqr(i-1, j, this.id)[1] == 1 && pieceOnSqr(i, j, this.id)[1] == 1) {
+                if (!pieceOnSqr( objects,i, j, this.color)[0] && !pieceOnSqr( objects,i-1, j, this.color)[0] && pieceOnSqr( objects,i-1, j, this.color)[1] == 1 && pieceOnSqr( objects,i, j, this.color)[1] == 1) {
                     this.legal_moves.push(i + '' + j);
                     // console.log(i,j)
                 }
                 //this.moved = 1;
             }
             i = this.x + 1;
-            if (!pieceOnSqr(i, j, this.id)[0] && pieceOnSqr(i, j, this.id)[1] == 1) {
-                // console.log(i,j,'no pi sqr',pieceOnSqr(i, j, this.id))
+            if (!pieceOnSqr( objects,i, j, this.color)[0] && pieceOnSqr( objects,i, j, this.color)[1] == 1) {
+                // console.log(i,j,'no pi sqr',pieceOnSqr( objects,i, j, this.color))
                 this.legal_moves.push(i + '' + j);
             }
             j = this.y + 1
-            // console.log(pieceOnSqr(i,j, this.id),'after j+1 = ',i,j,this.x,this.y)
-            if (!pieceOnSqr(i,j, this.id)[0] && pieceOnSqr(i, j, this.id)[1] == 0){
+            // console.log(pieceOnSqr( objects,i,j, this.color),'after j+1 = ',i,j,this.x,this.y)
+            if (!pieceOnSqr( objects,i,j, this.color)[0] && pieceOnSqr( objects,i, j, this.color)[1] == 0){
                 // console.log('yes take dsdsdd',i,j)
                 this.legal_moves.push(i + '' + j);
             }
-            if (!pieceOnSqr(i,j-2, this.id)[0] && j-2 >= 0 && pieceOnSqr(i, j-2, this.id)[1] == 0){
+            if (!pieceOnSqr( objects,i,j-2, this.color)[0] && j-2 >= 0 && pieceOnSqr( objects,i, j-2, this.color)[1] == 0){
                 // console.log('yes take')
                 this.legal_moves.push(i + '' + (j-2));
             }
@@ -68,21 +68,22 @@ export class Pawns extends ChessPieces {
         } else {//white
             if (this.moved == 0) {
                 i = this.x - 2;
-                if (!pieceOnSqr(i, j, this.id)[0]) {
+                if (!pieceOnSqr( objects,i, j, this.color)[0] && !pieceOnSqr( objects,i+1, j, this.color)[0] && pieceOnSqr( objects,i+1, j, this.color)[1] == 1 && pieceOnSqr( objects,i, j, this.color)[1] == 1) {
                     this.legal_moves.push(i + '' + j);
                 }
                 //this.moved = 1;
             }
             i = this.x - 1;
-            if (!pieceOnSqr(i, j, this.id)[0] && pieceOnSqr(i, j, this.id)[1] == 1) {
+            if (!pieceOnSqr( objects,i, j, this.color)[0] && pieceOnSqr( objects,i, j, this.color)[1] == 1) {
                 this.legal_moves.push(i + '' + j);
             }
             j = this.y + 1
-            if (!pieceOnSqr(i,j, this.id)[0] && pieceOnSqr(i, j, this.id)[1] == 0){
-                // console.log('yes')
+            // console.log(objects)
+            if (!pieceOnSqr( objects,i,j, this.color)[0] && pieceOnSqr( objects,i, j, this.color)[1] == 0){
                 this.legal_moves.push(i + '' + j);
             }
-            if (!pieceOnSqr(i,j-2, this.id)[0] && j-2 > 0 && pieceOnSqr(i, j-2, this.id)[1] == 0){
+            
+            if (!pieceOnSqr( objects,i,j-2, this.color)[0] && j-2 >= 0 && pieceOnSqr( objects,i, j-2, this.color)[1] == 0){
                 console.log('yes rud')
                 this.legal_moves.push(i + '' + (j-2));
             }
@@ -107,7 +108,7 @@ export class Rooks extends ChessPieces {
     // }
 
     legal_moves = []
-    legalMove() {
+    legalMove(objects) {
         this.legal_moves = []
         //x,y+k
         var i, j;
@@ -115,10 +116,10 @@ export class Rooks extends ChessPieces {
             i = this.x;
             j = this.y + k;
             
-            if (j > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -129,11 +130,11 @@ export class Rooks extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // <----
             i = this.x;
             j = this.y - k;
-            if (j < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 // console.log('Hiiii')
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -144,10 +145,10 @@ export class Rooks extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // down
             i = this.x + k;
             j = this.y;
-            if (i > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -158,10 +159,10 @@ export class Rooks extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // up
             i = this.x - k;
             j = this.y;
-            if (i < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 // console.log(i,j)
                 break;
@@ -178,7 +179,7 @@ export class Knights extends ChessPieces {
         super(id, name, color), color
     }
     legal_moves = []
-    legalMove() {
+    legalMove(objects) {
         this.legal_moves = []
         //x,y+k
         var i, j;
@@ -186,7 +187,7 @@ export class Knights extends ChessPieces {
         i = this.x + 1;
         j = this.y + 2;
         if (!(j > 7 || i > 7 )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -196,7 +197,7 @@ export class Knights extends ChessPieces {
         i = this.x + 2;
         j = this.y + 1;
         if (!(j > 7 || i > 7  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -207,7 +208,7 @@ export class Knights extends ChessPieces {
         i = this.x + 2;
         j = this.y - 1;
         if (!(i > 7 || j < 0  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -218,7 +219,7 @@ export class Knights extends ChessPieces {
         i = this.x + 1;
         j = this.y - 2;
         if (!(i > 7 || j < 0  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -229,7 +230,7 @@ export class Knights extends ChessPieces {
         i = this.x - 1;
         j = this.y - 2;
         if (!(j < 0 || i < 0  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -240,7 +241,7 @@ export class Knights extends ChessPieces {
         i = this.x - 2;
         j = this.y - 1;
         if (!(j < 0 || i < 0  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -251,7 +252,7 @@ export class Knights extends ChessPieces {
         i = this.x - 2;
         j = this.y + 1;
         if (!(i < 0 || j > 7  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -262,7 +263,7 @@ export class Knights extends ChessPieces {
         i = this.x - 1;
         j = this.y + 2;
         if (!(i < 0 || j > 7  )) {
-            if (pieceOnSqr(i, j, this.id)[0]) {
+            if (pieceOnSqr( objects,i, j, this.color)[0]) {
                 //
             }else{
                 this.legal_moves.push(i + '' + j)
@@ -279,7 +280,7 @@ export class Bishops extends ChessPieces {
         super(id, name, color)
     }
     legal_moves = []
-    legalMove() {
+    legalMove(objects) {
         this.legal_moves = []
         //x,y+k
         var i, j;
@@ -289,10 +290,10 @@ export class Bishops extends ChessPieces {
             j = this.y + k;
 
 
-            if (j > 7 || i > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j > 7 || i > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -303,10 +304,10 @@ export class Bishops extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // cross up  \
             i = this.x - k;
             j = this.y - k;
-            if (j < 0 || i < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j < 0 || i < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -317,10 +318,10 @@ export class Bishops extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // cross down /
             i = this.x + k;
             j = this.y - k;
-            if (i > 7 || j < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i > 7 || j < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -331,10 +332,10 @@ export class Bishops extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // cross up /
             i = this.x - k;
             j = this.y + k;
-            if (i < 0 || j > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i < 0 || j > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
-            else if(pieceOnSqr(i, j, this.id)[1]==0){
+            else if(pieceOnSqr( objects,i, j, this.color)[1]==0){
                 this.legal_moves.push(i + '' + j)
                 break;
             }
@@ -352,7 +353,7 @@ export class King extends ChessPieces {
     }
 
     legal_moves = []
-    legalMove() {
+    legalMove(objects) {
         this.legal_moves = []
         //x,y+k
         var i, j;
@@ -360,7 +361,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // --->
             i = this.x;
             j = this.y + k;
-            if (j > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j)
@@ -370,7 +371,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // <----
             i = this.x;
             j = this.y - k;
-            if (j < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -380,7 +381,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // down
             i = this.x + k;
             j = this.y;
-            if (i > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -390,7 +391,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // up
             i = this.x - k;
             j = this.y;
-            if (i < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j)
@@ -399,7 +400,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { //  cross down \
             i = this.x + k;
             j = this.y + k;
-            if (j > 7 || i > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j > 7 || i > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j)
@@ -409,7 +410,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // cross up  \
             i = this.x - k;
             j = this.y - k;
-            if (j < 0 || i < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (j < 0 || i < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -419,7 +420,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // cross down /
             i = this.x + k;
             j = this.y - k;
-            if (i > 7 || j < 0 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i > 7 || j < 0 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -429,7 +430,7 @@ export class King extends ChessPieces {
         for (let k = 1; k <= 1; k++) { // cross up /
             i = this.x - k;
             j = this.y + k;
-            if (i < 0 || j > 7 || pieceOnSqr(i, j, this.id)[0]) {
+            if (i < 0 || j > 7 || pieceOnSqr( objects,i, j, this.color)[0]) {
                 break;
             }
             this.legal_moves.push(i + '' + j);
@@ -445,7 +446,7 @@ export class Queen extends ChessPieces {
         super(id, name, color)
     }
     legal_moves = []
-    legalMove() {
+    legalMove(objects) {
         this.legal_moves = []
         //x,y+k
         var i, j ;
@@ -454,7 +455,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // --->
             i = this.x;
             j = this.y + k;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -474,7 +475,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // <----
             i = this.x;
             j = this.y - k;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -490,7 +491,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // down
             i = this.x + k;
             j = this.y;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -514,7 +515,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // up
             i = this.x - k;
             j = this.y;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -537,7 +538,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { //  cross down \
             i = this.x + k;
             j = this.y + k;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -560,7 +561,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // cross up  \
             i = this.x - k;
             j = this.y - k;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -583,7 +584,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // cross down /
             i = this.x + k;
             j = this.y - k;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
@@ -606,7 +607,7 @@ export class Queen extends ChessPieces {
         for (let k = 1; k <= 7; k++) { // cross up /
             i = this.x - k;
             j = this.y + k;
-            result = pieceOnSqr(i,j,this.id)
+            result = pieceOnSqr( objects,i,j,this.color)
             if (!result[0] && result[1]==0) {
                 this.legal_moves.push(i + '' + j)
                 break;
