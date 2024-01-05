@@ -84,7 +84,7 @@ export class Pawns extends ChessPieces {
             }
             
             if (!pieceOnSqr( objects,i,j-2, this.color)[0] && j-2 >= 0 && pieceOnSqr( objects,i, j-2, this.color)[1] == 0){
-                console.log('yes rud')
+                // console.log('yes rud')
                 this.legal_moves.push(i + '' + (j-2));
             }
             
