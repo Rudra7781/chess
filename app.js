@@ -12,7 +12,7 @@ var CheckMsg = document.getElementById('check')
 const btns = document.getElementsByClassName('btn')
 Array.from(btns).forEach(btn => {
     btn.addEventListener('click', () => {
-        console.log('Restart')
+        // console.log('Restart')
         notification.style.display = 'none';
          location.reload()
 
@@ -202,7 +202,7 @@ function movePiece(objId, newPosition, div, current, objects) {
         for (var i = 0; i < objects.length; i++) {
             if (objects[i].id == objId) {
                 objects.splice(i, 1);
-                console.log('ddcdf')
+                // console.log('ddcdf')
             }
         }
         div.removeChild(current[0]);
@@ -213,7 +213,7 @@ function movePiece(objId, newPosition, div, current, objects) {
     game[X][Y] = obj.id;
     restrictPiece(objects)
     obj.moved = 1;
-    console.log('before checkmate',obj)
+    // console.log('before checkmate',obj)
 
     if (ifCheckmate(objects, obj)) {
         if(obj.color){
@@ -223,10 +223,10 @@ function movePiece(objId, newPosition, div, current, objects) {
         }
         notification.style.display = 'grid';
         end.play()
-        // setTimeout(() => {
-        //     clearBoard();
+        setTimeout(() => {
+            clearBoard();
             
-        // }, 4000);
+        }, 4000);
         return;
     }
     audio.play();
@@ -320,7 +320,7 @@ function dragdrop() {
 // console.log(game, boxes)
 // console.log(objects)
 function clearBoard() {
-    console.log('Restart')
+    // console.log('Restart')
     notification.style.display = 'none';
     location.reload()
 }

@@ -264,4 +264,13 @@ h3{
         font-size: 2vw;
         padding: 2vw;
     }
+
+    #notification {
+        /* margin-left: auto; */
+        width: 40vw;
+        height: 40vw;
+        left:30vw;
+        border-radius: 3vw;
+        font-size: 5.5vw;
+    }
 }
