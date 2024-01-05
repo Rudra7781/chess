@@ -103,9 +103,6 @@ export function ifCheckmate(objects, obj) {
             // Extract characters into different variables
             let X = parseInt(XY[0]);
             let Y = parseInt(XY[1]);
-            console.log(X,Y,document.getElementById(move).childNodes,emy_King)
-            // console.log('in checkmate',ifCheck(objects, Piece, X, Y, document.getElementById(move).childNodes))
-            console.log('MATE ', Piece, X, Y, document.getElementById(move).childNodes)
             if (!ifCheck(objects, Piece, X, Y, document.getElementById(move).childNodes)) {
                 return false
             }
@@ -122,7 +119,7 @@ export function ifCheck(objects, obj, X, Y, current) {
     var len = objects.length
 
     if (current.length != 0) { //Take method
-        console.log(current)
+
         var objId = current[0].id.replace('-', '')
         for (var i = 0; i < tmpObj.length; i++) {
             if (tmpObj[i].id == objId) {
@@ -163,7 +160,6 @@ export function ifCheck(objects, obj, X, Y, current) {
     // objects.splice(object)
     // objects = tmpObj
     if(len != objects.length){
-        console.log('problem',len,objects.length)
         objects.push(poo[0])
         // console.log(objects)
     }
